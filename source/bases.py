@@ -41,8 +41,9 @@ def hexToDigits(digits):
     
     for i in range(len(digits)-1, -1, -1): # loop in reverse
         curr = digits[i]
-        print(curr)
+        # print("curr:%s"%curr)
         temp = 0 # value for current hex bit
+        # print("temp:%d"%temp)
         if (curr == ' '): # if space
             continue
         elif (curr.lower() == 'x'): # if marker for hex, but not part of hex num
@@ -54,10 +55,36 @@ def hexToDigits(digits):
             temp = 10 + (ord(curr) - ord('a')) # get its value
         
         result += (16**mult)*temp
+        # print(result, mult, temp)
         mult += 1
     
     return result
 
+# all bases
+def convertToDigits(digits, base):
+    # if digit: use that as temp
+    # if letter: 10 + (ord('letter') - ord('A'))
+    mult = 0
+    result = 0
+    
+    for i in range(len(digits)-1, -1, -1): # loop in reverse
+        curr = digits[i]
+        # print(curr)
+        temp = 0 # value for current hex bit
+        if (curr == ' '): # if space
+            continue
+        elif (curr.lower() == 'x'): # if marker for hex, but not part of hex num
+            break
+        elif (curr.isnumeric()): # if number
+            temp = int(curr)
+        elif (curr.isalpha()): # if letter
+            curr = curr.lower()
+            temp = 10 + (ord(curr) - ord('a')) # get its value
+        
+        result += (base**mult)*temp
+        mult += 1
+    
+    return result
 
 def decode(digits, base):
     """Decode given digits in given base to number in base 10.
@@ -66,12 +93,18 @@ def decode(digits, base):
     return: int -- integer representation of number (in base 10)"""
     # Handle up to base 36 [0-9a-z]
     assert 2 <= base <= 36, 'base is out of range: {}'.format(base)
-    # TODO: Decode digits from binary (base 2)
-    # ...
-    # TODO: Decode digits from hexadecimal (base 16)
-    # ...
+    # Decode digits from binary (base 2) --> not necessary anymore 
+    # because conversions handled for all bases
+    # if (base == 2):
+    #     return binaryToDigits(digits)
+    
+    # Decode digits from hexadecimal (base 16)--> not necessary anymore 
+    # because conversions handled for all bases
+    # if (base == 16):
+    #     return hexToDigits(digits)
+    
     # TODO: Decode digits from any base (2 up to 36)
-    # ...
+    return convertToDigits(digits, base)
 
 
 def encode(number, base):
@@ -119,9 +152,8 @@ def main():
         base1 = int(args[1])
         base2 = int(args[2])
         # Convert given digits between bases
-        # result = convert(digits, base1, base2)
-        print(hexToDigits('A1') == binaryToDigits('1010 0001'))
-        # print('{} in base {} is {} in base {}'.format(digits, base1, result, base2))
+        result = convert(digits, base1, base2)
+        print('{} in base {} is {} in base {}'.format(digits, base1, result, base2))
     else:
         print('Usage: {} digits base1 base2'.format(sys.argv[0]))
         print('Converts digits from base1 to base2')
