@@ -89,21 +89,21 @@ def convertToDigits(digits, base):
 
 
 # ```````` helper functions for encode ```````` #
-def getBinaryLength(digits):
-    exp = int(math.log(digits, 2))
+def getBinaryLength(digits, i):
+    exp = int(math.log(digits, i))
     # make sure exp is valid 
-    if ((exp+1)%4 != 0):
+    if (i == 2 and (exp+1)%4 != 0):
         if ((exp+2)%4 == 0):
             exp += 1
         elif ((exp-2)%4 == 0):
             exp -= 1
     return exp
 # input is an integer, convert it to base 2
-def digitToBinary(digits):
+def digitToBinary(digit):
     result = ""
     # to get the len for binary and max exp value for 2, do log base 2 of digit
     # use that as the start value
-    exp = getBinaryLength(digits)
+    exp = getBinaryLength(digit, 2)
     # grammar, spacing
     # count = 0
     while (exp >= 0):
@@ -115,14 +115,44 @@ def digitToBinary(digits):
         # 2's exponential value for this bit
         temp = 2**exp
         exp -= 1
-        if (digits >= temp):
-            digits -= temp
+        if (digit >= temp):
+            digit -= temp
             result += '1'
         else:
             result += '0'
         # count += 1
     return result
 
+# digit to hexadecimal, base 16
+def digitToHex(digit):
+    result = ""
+    hexvals = string.hexdigits
+    print(hexvals)
+    while (digit > 0):
+        rem = int(digit % 16)
+        print(rem)
+        # remainder is the hex digit
+        result = hexvals[rem] + result
+
+        digit //= 16
+        print("DIGIT: %d"%digit)
+        print(digit > 0)
+    return result
+
+# converts a digit to any base specified
+def digitToBase(digit, base):
+    result = ""
+    hexvals = string.hexdigits
+    print(hexvals)
+    while (digit > 0):
+        rem = int(digit % base)
+        print(rem)
+        # remainder is the hex digit
+        result = hexvals[rem] + result
+
+        digit //= base
+        print("DIGIT: %d"%digit)
+    return result
 
 # ```````` functions assigned to complete ```````` #
 
@@ -156,12 +186,14 @@ def encode(number, base):
     assert 2 <= base <= 36, 'base is out of range: {}'.format(base)
     # Handle unsigned numbers only for now
     assert number >= 0, 'number is negative: {}'.format(number)
-    # TODO: Encode number in binary (base 2)
-    # ...
-    # TODO: Encode number in hexadecimal (base 16)
-    # ...
-    # TODO: Encode number in any base (2 up to 36)
-    # ...
+    # Encode number in binary (base 2)
+    # if (base == 2): ---> not needed because digitToBase works for all bases
+    #     return digitToBinary(number)
+    # Encode number in hexadecimal (base 16)
+    # if (base == 16): ---> not needed because digitToBase works for all bases
+    #     return digitToHex(number)
+    # Encode number in any base (2 up to 36)
+    return digitToBase(number, base)
 
 
 def convert(digits, base1, base2):
@@ -192,9 +224,9 @@ def main():
         base1 = int(args[1])
         base2 = int(args[2])
         # Convert given digits between bases
-        print(digitToBinary(1234))
-        # result = convert(digits, base1, base2)
-        # print('{} in base {} is {} in base {}'.format(digits, base1, result, base2))
+        # print(digitToBase(3000, 16))
+        result = convert(digits, base1, base2)
+        print('{} in base {} is {} in base {}'.format(digits, base1, result, base2))
     else:
         print('Usage: {} digits base1 base2'.format(sys.argv[0]))
         print('Converts digits from base1 to base2')
