@@ -1,6 +1,7 @@
 #!python
 
 import string
+import math
 # Hint: Use these string constants to encode/decode hexadecimal digits and more
 # string.digits is '0123456789'
 # string.hexdigits is '0123456789abcdefABCDEF'
@@ -9,7 +10,7 @@ import string
 # string.ascii_letters is ascii_lowercase + ascii_uppercase
 # string.printable is digits + ascii_letters + punctuation + whitespace
 
-# helper functions
+# ```````` helper functions for decode ```````` #
 
 # digit string to digits, base = 10
 def digit(digits):
@@ -86,6 +87,45 @@ def convertToDigits(digits, base):
     
     return result
 
+
+# ```````` helper functions for encode ```````` #
+def getBinaryLength(digits):
+    exp = int(math.log(digits, 2))
+    # make sure exp is valid 
+    if ((exp+1)%4 != 0):
+        if ((exp+2)%4 == 0):
+            exp += 1
+        elif ((exp-2)%4 == 0):
+            exp -= 1
+    return exp
+# input is an integer, convert it to base 2
+def digitToBinary(digits):
+    result = ""
+    # to get the len for binary and max exp value for 2, do log base 2 of digit
+    # use that as the start value
+    exp = getBinaryLength(digits)
+    # grammar, spacing
+    # count = 0
+    while (exp >= 0):
+        # formatting
+        # if (count == 4):
+        #     count = 0
+        #     result += ' '
+        
+        # 2's exponential value for this bit
+        temp = 2**exp
+        exp -= 1
+        if (digits >= temp):
+            digits -= temp
+            result += '1'
+        else:
+            result += '0'
+        # count += 1
+    return result
+
+
+# ```````` functions assigned to complete ```````` #
+
 def decode(digits, base):
     """Decode given digits in given base to number in base 10.
     digits: str -- string representation of number (in given base)
@@ -152,8 +192,9 @@ def main():
         base1 = int(args[1])
         base2 = int(args[2])
         # Convert given digits between bases
-        result = convert(digits, base1, base2)
-        print('{} in base {} is {} in base {}'.format(digits, base1, result, base2))
+        print(digitToBinary(1234))
+        # result = convert(digits, base1, base2)
+        # print('{} in base {} is {} in base {}'.format(digits, base1, result, base2))
     else:
         print('Usage: {} digits base1 base2'.format(sys.argv[0]))
         print('Converts digits from base1 to base2')
