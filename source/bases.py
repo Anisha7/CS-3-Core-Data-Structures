@@ -261,8 +261,6 @@ def main():
         base1 = int(args[1])
         base2 = int(args[2])
         # Convert given digits between bases
-        # print(digitToBase(13, 2)) #16i
-        # print(convert2and16('c9', 16))
         result = convert(digits, base1, base2)
         print('{} in base {} is {} in base {}'.format(digits, base1, result, base2))
     else:
