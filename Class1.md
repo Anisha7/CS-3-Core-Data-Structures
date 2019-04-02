@@ -55,3 +55,12 @@
 
 [starter code]: source/bases.py
 [unit tests]: source/bases_test.py
+
+
+## notes
+- base10: digits 0-9; 9 rolls over to "10" and 99 rolls over to "100"
+- base2 (binary): digits 0-1: 1 rolls over to "10" and 11 rolls over to "100"
+    - Ex. 101 = ( 2^0 * 1 ) + (2^1 * 0) + (2^2 * 1) = 1 + 0 + 4 = 5
+- base16 (hexadecimal): 0-9 and A-F, 9 continues to A and F rolls over to "10"
+    - 99 continues to 9A and FF rolls over to "100"
+    - Every hex digit is 4 binary digits (bits) --> 5(base 16) = "0101"(base2)

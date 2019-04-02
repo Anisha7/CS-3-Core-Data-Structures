@@ -9,6 +9,55 @@ import string
 # string.ascii_letters is ascii_lowercase + ascii_uppercase
 # string.printable is digits + ascii_letters + punctuation + whitespace
 
+# helper functions
+
+# digit string to digits, base = 10
+def digit(digits):
+    return int(digits)
+
+# binary to digits, base = 2
+def binaryToDigits(digits):
+    mult = 0 # the exponential power for 2
+    result = 0
+
+    for i in range(len(digits)-1, -1, -1): # loop in reverse
+        if (digits[i] == ' '):
+            continue
+        temp = 0 # what binary digit we are on, 1 or 0
+        if (digits[i] == '1'):
+            temp = 1
+
+        result += (2**mult)*temp
+        mult += 1
+    
+    return result
+
+# hexadecimal to digits, base = 16
+def hexToDigits(digits):
+    # if digit: use that as temp
+    # if letter: 10 + (ord('letter') - ord('A'))
+    mult = 0
+    result = 0
+    
+    for i in range(len(digits)-1, -1, -1): # loop in reverse
+        curr = digits[i]
+        print(curr)
+        temp = 0 # value for current hex bit
+        if (curr == ' '): # if space
+            continue
+        elif (curr.lower() == 'x'): # if marker for hex, but not part of hex num
+            break
+        elif (curr.isnumeric()): # if number
+            temp = int(curr)
+        elif (curr.isalpha()): # if letter
+            curr = curr.lower()
+            temp = 10 + (ord(curr) - ord('a')) # get its value
+        
+        result += (16**mult)*temp
+        mult += 1
+    
+    return result
+
 
 def decode(digits, base):
     """Decode given digits in given base to number in base 10.
@@ -70,8 +119,9 @@ def main():
         base1 = int(args[1])
         base2 = int(args[2])
         # Convert given digits between bases
-        result = convert(digits, base1, base2)
-        print('{} in base {} is {} in base {}'.format(digits, base1, result, base2))
+        # result = convert(digits, base1, base2)
+        print(hexToDigits('A1') == binaryToDigits('1010 0001'))
+        # print('{} in base {} is {} in base {}'.format(digits, base1, result, base2))
     else:
         print('Usage: {} digits base1 base2'.format(sys.argv[0]))
         print('Converts digits from base1 to base2')
@@ -79,3 +129,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
