@@ -309,10 +309,14 @@ def encodeDecimal(digit):
         temp = digit*2
         result += str(int(temp))
         digit = temp - int(temp)
+        print(digit)
+        # digit = temp - int(temp)
     
     return result
 
 def digitToFractionalBinary(digit):
+    if (digit == int(digit)):
+        return encode(int(digit), 2)
     return encode(int(digit), 2) + '.' + encodeDecimal(digit - int(digit))
 
 
