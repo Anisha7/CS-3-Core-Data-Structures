@@ -64,7 +64,7 @@ def hexToDigits(digits):
 def convertToDigits(digits, base):
     # if digit: use that as temp
     # if letter: 10 + (ord('letter') - ord('A'))
-    mult = 0
+    mult = 0 # exponent power for base
     result = 0
     
     for i in range(len(digits)-1, -1, -1): # loop in reverse
@@ -73,13 +73,9 @@ def convertToDigits(digits, base):
         temp = 0 # value for current hex bit
         if (curr == ' '): # if space
             continue
-        elif (curr.lower() == 'x'): # if marker for hex, but not part of hex num
-            break
-        elif (curr.isdigit()): # if number
-            temp = int(curr)
-        elif (curr.isalpha()): # if letter
-            curr = curr.lower()
-            temp = 10 + (ord(curr) - ord('a')) # get its value
+        # elif (curr.lower() == 'x'): # if marker for hex, but not part of hex num
+        #     break
+        temp = string.printable.index(curr)
         
         result += (base**mult)*temp
         mult += 1
@@ -144,10 +140,10 @@ def digitToBase(digit, base):
     result = ""
     # hexvals = string.hexdigits
     hexvals = '0123456789' + string.ascii_lowercase
-    print(hexvals)
+    # print(hexvals)
     while (digit > 0):
         rem = int(digit % base)
-        print(rem, hexvals[rem])
+        # print(rem, hexvals[rem])
         # remainder is the hex digit
         result = hexvals[rem] + result
 
@@ -251,6 +247,20 @@ def convert(digits, base1, base2):
     digit10 = decode(digits, base1)
     return encode(digit10, base2).lower()
 
+# ```````` stretch challenges ```````` #
+# ````````  signed magnitude ```````` #
+def digitToSignedBinary(digit):
+    return
+
+# ````````  one's complement ```````` #
+def digitToOnesComplement(digit):
+    return
+
+# ````````  base conversion for negative binary numbers (using two's complement) ```````` #
+def digitToTwosComplement(digit):
+    return
+
+# ```````` base conversion for fractional numbers using a radix point ```````` #
 
 def main():
     """Read command-line arguments and convert given digits between bases."""
