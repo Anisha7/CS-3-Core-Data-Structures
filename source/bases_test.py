@@ -284,8 +284,11 @@ class BasesDecimalTest(unittest.TestCase):
         assert fractionalBinaryToDigit('10.0111') == 2.4375
         assert fractionalBinaryToDigit('10010100.0010') == 148.125
 
-    # def test_digit_to_fractional_binary(self):
-
+    def test_digit_to_fractional_binary(self):
+        assert digitToFractionalBinary(13.625) == '1101.101'
+        assert digitToFractionalBinary(14) == '1110'
+        assert digitToFractionalBinary(2.4375) == '10.0111'
+        assert digitToFractionalBinary(148.125) == '10010100.0010'
 
 
 if __name__ == '__main__':

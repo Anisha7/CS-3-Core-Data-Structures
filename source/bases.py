@@ -300,8 +300,20 @@ def digitToTwosComplement(digit):
     return encode(digit, 2)
 
 # ```````` base conversion for fractional numbers using a radix point ```````` #
+
+# helper for digit to fractional binary function
+def encodeDecimal(digit):
+    result = ""
+    # print(hexvals)
+    while (digit > 0):
+        temp = digit*2
+        result += str(int(temp))
+        digit = temp - int(temp)
+    
+    return result
+
 def digitToFractionalBinary(digit):
-    return
+    return encode(int(digit), 2) + '.' + encodeDecimal(digit - int(digit))
 
 
 
@@ -354,4 +366,5 @@ if __name__ == '__main__':
     main()
     print("TESTING STRETCH CHALLENGES")
     print(fractionalBinaryToDigit('1101.101')) # 13.625
+    print(digitToFractionalBinary(13.625))
 
