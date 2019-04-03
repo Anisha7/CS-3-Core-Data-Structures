@@ -161,7 +161,7 @@ def decode(digits, base):
     
     for i in range(len(digits)-1, -1, -1): # loop in reverse
         curr = digits[i]
-        temp = 0 # value for current bit
+        val = 0 # value for current bit
         if (curr == ' '): # if space formatting
             continue
         # elif (curr.lower() == 'x'): # if marker for hex, but not part of hex num
