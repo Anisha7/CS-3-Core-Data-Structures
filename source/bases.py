@@ -74,7 +74,7 @@ def convertToDigits(digits, base):
         # elif (curr.lower() == 'x'): # if marker for hex, but not part of hex num
         #     break
         temp = string.printable.index(curr)
-        
+        # temp = 10 + (ord(curr) - ord('a'))
         result += (base**mult)*temp
         mult += 1
     
@@ -143,58 +143,6 @@ def digitToBase(digit, base):
         digit //= base
     return result
 
-
-# ```````` decode and encode functions assigned to complete ```````` #
-
-def decode(digits, base):
-    """Decode given digits in given base to number in base 10.
-    digits: str -- string representation of number (in given base)
-    base: int -- base of given number
-    return: int -- integer representation of number (in base 10)"""
-    # Handle up to base 36 [0-9a-z]
-    assert 2 <= base <= 36, 'base is out of range: {}'.format(base)
-    # Decode digits from binary (base 2) --> binaryToDigits(digits)
-    # Decode digits from hexadecimal (base 16)--> hexToDigits(digits)
-    # Decode digits from any base (2 up to 36) --> convertToDigits(digits, base)
-    mult = 0 # exponent power for base
-    result = 0
-    
-    for i in range(len(digits)-1, -1, -1): # loop in reverse
-        curr = digits[i]
-        val = 0 # value for current bit
-        if (curr == ' '): # if space formatting
-            continue
-        # elif (curr.lower() == 'x'): # if marker for hex, but not part of hex num
-        #     break
-        val = string.printable.index(curr) # value for that individual bit
-        result += (base**mult)*val # value for that bit in its location
-        mult += 1
-    
-    return result
-
-
-def encode(number, base):
-    """Encode given number in base 10 to digits in given base.
-    number: int -- integer representation of number (in base 10)
-    base: int -- base to convert to
-    return: str -- string representation of number (in given base)"""
-    # Handle up to base 36 [0-9a-z]
-    assert 2 <= base <= 36, 'base is out of range: {}'.format(base)
-    # Handle unsigned numbers only for now
-    assert number >= 0, 'number is negative: {}'.format(number)
-    # Encode number in binary (base 2) ---> digitToBinary(number)
-    # Encode number in hexadecimal (base 16) ---> digitToHex(number)
-    # Encode number in any base (2 up to 36) ---> digitToBase(int(number), base).lower()
-    digit = int(number)
-    result = ""
-    # print(hexvals)
-    while (digit > 0):
-        rem = int(digit % base) # the hex digit
-        result = string.printable[rem] + result
-        digit //= base
-    return result
-
-
 # ```````` helper functions for convert ```````` #
 
 # Convert digits from base 2 to base 16 (and vice versa)
@@ -221,6 +169,64 @@ def convert2and16(digits, base):
             result += encode(digit10, 16)
     return result.lower()
 
+
+# ```````` decode and encode functions assigned to complete ```````` #
+
+def decode(digits, base):
+    """Decode given digits in given base to number in base 10.
+    digits: str -- string representation of number (in given base)
+    base: int -- base of given number
+    return: int -- integer representation of number (in base 10)"""
+    # Handle up to base 36 [0-9a-z]
+    assert 2 <= base <= 36, 'base is out of range: {}'.format(base)
+    # Decode digits from binary (base 2) --> binaryToDigits(digits)
+    # Decode digits from hexadecimal (base 16)--> hexToDigits(digits)
+    # Decode digits from any base (2 up to 36) --> convertToDigits(digits, base)
+    mult = 0 # exponent power for base
+    result = 0
+    
+    for i in range(len(digits)-1, -1, -1): # loop in reverse
+        curr = digits[i]
+        val = 0 # value for current bit
+        if (curr == ' '): # if space formatting
+            continue
+        # elif (curr.lower() == 'x'): # if marker for hex, but not part of hex num
+        #     break
+        # val = string.printable.index(curr) # value for that individual bit --> slower
+        val = 0 
+        if (curr.isalpha()): 
+            val = 10 + (ord(curr) - ord('a')) # faster than using .index()
+        elif (curr.isdigit()):
+            val =int(curr)
+        result += (base**mult)*val # value for that bit in its location
+        mult += 1
+    
+    return result
+
+
+def encode(number, base):
+    """Encode given number in base 10 to digits in given base.
+    number: int -- integer representation of number (in base 10)
+    base: int -- base to convert to
+    return: str -- string representation of number (in given base)"""
+    # Handle up to base 36 [0-9a-z]
+    assert 2 <= base <= 36, 'base is out of range: {}'.format(base)
+    # Handle unsigned numbers only for now
+    assert number >= 0, 'number is negative: {}'.format(number)
+    # Encode number in binary (base 2) ---> digitToBinary(number)
+    # Encode number in hexadecimal (base 16) ---> digitToHex(number)
+    # Encode number in any base (2 up to 36) ---> digitToBase(int(number), base).lower()
+    digit = int(number)
+    result = ""
+    # print(hexvals)
+    while (digit > 0):
+        rem = int(digit % base) # the hex digit
+        result = string.printable[rem] + result
+        digit //= base
+    
+    return result
+
+
 # ```````` convert function assigned to complete ```````` #
 
 def convert(digits, base1, base2):
@@ -232,23 +238,17 @@ def convert(digits, base1, base2):
     # Handle up to base 36 [0-9a-z]
     assert 2 <= base1 <= 36, 'base1 is out of range: {}'.format(base1)
     assert 2 <= base2 <= 36, 'base2 is out of range: {}'.format(base2)
-    
     # Convert digits from base 2 to base 10 (and vice versa)
     # Convert digits from base 10 to base 16 (and vice versa)
-    if (base2 == 10): # converting any digit to base 10
-        return str(decode(digits, base1))
-    if (base1 == 10): # convert digits to any base
-        return encode(int(digits), base2).lower()
-   
-    # Convert digits from base 2 to base 16 (and vice versa)
-    # if (base2 == 16 or base2 == 2):
-    #     return convert2and16(digits, base1)
-    
+    # if (base2 == 10): --> str(decode(digits, base1))
+    # if (base1 == 10): --> encode(int(digits), base2).lower()
+    # Convert digits from base 2 to base 16 (and vice versa) --> return convert2and16(digits, base1)
     # Convert digits from any base to any base (2 up to 36)
     digit10 = decode(digits, base1)
     return encode(digit10, base2).lower()
 
 # ```````` stretch challenges ```````` #
+
 # ````````  signed magnitude ```````` #
 def digitToSignedBinary(digit):
     return
