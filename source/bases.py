@@ -62,8 +62,6 @@ def hexToDigits(digits):
 
 # all bases
 def convertToDigits(digits, base):
-    # if digit: use that as temp
-    # if letter: 10 + (ord('letter') - ord('A'))
     mult = 0 # exponent power for base
     result = 0
     
@@ -155,18 +153,24 @@ def decode(digits, base):
     return: int -- integer representation of number (in base 10)"""
     # Handle up to base 36 [0-9a-z]
     assert 2 <= base <= 36, 'base is out of range: {}'.format(base)
-    # Decode digits from binary (base 2) --> not necessary anymore 
-    # because conversions handled for all bases
-    # if (base == 2):
-    #     return binaryToDigits(digits)
+    # Decode digits from binary (base 2) --> binaryToDigits(digits)
+    # Decode digits from hexadecimal (base 16)--> hexToDigits(digits)
+    # Decode digits from any base (2 up to 36) --> convertToDigits(digits, base)
+    mult = 0 # exponent power for base
+    result = 0
     
-    # Decode digits from hexadecimal (base 16)--> not necessary anymore 
-    # because conversions handled for all bases
-    # if (base == 16):
-    #     return hexToDigits(digits)
+    for i in range(len(digits)-1, -1, -1): # loop in reverse
+        curr = digits[i]
+        temp = 0 # value for current bit
+        if (curr == ' '): # if space formatting
+            continue
+        # elif (curr.lower() == 'x'): # if marker for hex, but not part of hex num
+        #     break
+        val = string.printable.index(curr) # value for that individual bit
+        result += (base**mult)*val # value for that bit in its location
+        mult += 1
     
-    # Decode digits from any base (2 up to 36)
-    return convertToDigits(digits, base)
+    return result
 
 
 def encode(number, base):
@@ -178,14 +182,17 @@ def encode(number, base):
     assert 2 <= base <= 36, 'base is out of range: {}'.format(base)
     # Handle unsigned numbers only for now
     assert number >= 0, 'number is negative: {}'.format(number)
-    # Encode number in binary (base 2)
-    # if (base == 2): ---> not needed because digitToBase works for all bases
-    #     return digitToBinary(number)
-    # Encode number in hexadecimal (base 16)
-    # if (base == 16): ---> not needed because digitToBase works for all bases
-    #     return digitToHex(number)
-    # Encode number in any base (2 up to 36)
-    return digitToBase(int(number), base).lower()
+    # Encode number in binary (base 2) ---> digitToBinary(number)
+    # Encode number in hexadecimal (base 16) ---> digitToHex(number)
+    # Encode number in any base (2 up to 36) ---> digitToBase(int(number), base).lower()
+    digit = int(number)
+    result = ""
+    # print(hexvals)
+    while (digit > 0):
+        rem = int(digit % base) # the hex digit
+        result = string.printable[rem] + result
+        digit //= base
+    return result
 
 
 # ```````` helper functions for convert ```````` #
