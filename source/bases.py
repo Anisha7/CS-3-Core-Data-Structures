@@ -300,6 +300,39 @@ def digitToTwosComplement(digit):
     return encode(digit, 2)
 
 # ```````` base conversion for fractional numbers using a radix point ```````` #
+def digitToFractionalBinary(digit):
+    return
+
+
+
+# helper for fractional binary to digit function
+def decodeDecimal(digits):
+    mult = -1 # exponent power for base
+    result = 0
+    
+    for curr in digits: # loop in reverse
+        val = 0 # value for current bit
+        if (curr == ' '): # if space formatting
+            continue
+        val = int(curr)
+        result += (2**mult)*val # value for that bit in its location
+        mult -= 1
+    
+    return result
+
+# base 2 fractional binery to base 10 digit
+def fractionalBinaryToDigit(digits):
+    arr = digits.split('.')
+    if (len(arr) <= 1):
+        return decode(digits, 2)
+    
+    wholenum = decode(arr[0], 2)
+
+    decimalnum = decodeDecimal(arr[1])
+
+    return wholenum + decimalnum
+
+
 
 def main():
     """Read command-line arguments and convert given digits between bases."""
@@ -320,7 +353,5 @@ def main():
 if __name__ == '__main__':
     main()
     print("TESTING STRETCH CHALLENGES")
-    print(digitToTwosComplement(-72)) #10111000
-    print(twosComplementToDigit('10111000')) # -72
-    print(digitToTwosComplement(47))# == '00101111'
+    print(fractionalBinaryToDigit('1101.101')) # 13.625
 

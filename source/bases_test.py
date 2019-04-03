@@ -1,6 +1,6 @@
 #!python
 
-from bases import decode, encode, convert, twosComplementToDigit, digitToTwosComplement
+from bases import decode, encode, convert, twosComplementToDigit, digitToTwosComplement, fractionalBinaryToDigit, digitToFractionalBinary
 import unittest
 
 
@@ -276,6 +276,17 @@ class BasesUnsignedTest(unittest.TestCase):
         assert digitToTwosComplement(-72) == '10111000'
         assert digitToTwosComplement(47) == '101111'
         assert digitToTwosComplement(-109) == '10010011'
+
+class BasesDecimalTest(unittest.TestCase):
+    def test_fractional_binary_to_digit(self):
+        assert fractionalBinaryToDigit('1101.101') == 13.625
+        assert fractionalBinaryToDigit('1110') == 14
+        assert fractionalBinaryToDigit('10.0111') == 2.4375
+        assert fractionalBinaryToDigit('10010100.0010') == 148.125
+
+    # def test_digit_to_fractional_binary(self):
+
+
 
 if __name__ == '__main__':
     unittest.main()
