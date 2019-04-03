@@ -138,17 +138,11 @@ def digitToHex(digit):
 def digitToBase(digit, base):
     # digit = int(digit)
     result = ""
-    # hexvals = string.hexdigits
-    hexvals = '0123456789' + string.ascii_lowercase
     # print(hexvals)
     while (digit > 0):
-        rem = int(digit % base)
-        # print(rem, hexvals[rem])
-        # remainder is the hex digit
-        result = hexvals[rem] + result
-
+        rem = int(digit % base) # the hex digit
+        result = string.printable[rem] + result
         digit //= base
-        # print("DIGIT: %d"%digit)
     return result
 
 
