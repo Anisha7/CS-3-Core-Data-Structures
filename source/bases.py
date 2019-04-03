@@ -9,6 +9,8 @@ import math
 # string.ascii_uppercase is 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 # string.ascii_letters is ascii_lowercase + ascii_uppercase
 # string.printable is digits + ascii_letters + punctuation + whitespace
+
+
 # ```````` helper functions for decode ```````` #
 
 # digit string to digits, base = 10
@@ -170,7 +172,7 @@ def convert2and16(digits, base):
     return result.lower()
 
 
-# ```````` decode and encode functions assigned to complete ```````` #
+# ```````` ASSIGNED: DECODE AND ENCODE FUNCTIONS ```````` #
 
 def decode(digits, base):
     """Decode given digits in given base to number in base 10.
@@ -227,7 +229,7 @@ def encode(number, base):
     return result
 
 
-# ```````` convert function assigned to complete ```````` #
+# ```````` ASSIGNED: CONVERT FUNCTION ```````` #
 
 def convert(digits, base1, base2):
     """Convert given digits in base1 to digits in base2.
@@ -247,19 +249,55 @@ def convert(digits, base1, base2):
     digit10 = decode(digits, base1)
     return encode(digit10, base2).lower()
 
-# ```````` stretch challenges ```````` #
+# ```````` STRETCH CHALLENGES ```````` #
 
-# ````````  signed magnitude ```````` #
-def digitToSignedBinary(digit):
-    return
+# ```` helpers ````
 
-# ````````  one's complement ```````` #
-def digitToOnesComplement(digit):
-    return
+# inverts bits for given binary --> 0's = 1's and 1's = 0's
+def invertBits(digits):
+    invertedBit = ''
+    for digit in digits:
+        if (digit == '1'):
+            invertedBit += '0'
+        elif (digit == '0'):
+            invertedBit += '1'
+    return invertedBit
 
-# ````````  base conversion for negative binary numbers (using two's complement) ```````` #
+# adds 1 to given binary
+def addOneToBinary(digits):
+    carry = '1'
+    result = ''
+    for i in range(len(digits)-1, -1, -1):
+        curr = digits[i]
+        if (curr == '1' and carry == '1'):
+            result += '0'
+        elif (curr == '0' and carry == '1'):
+            result += '1'
+            carry = '0'
+        elif (curr == '1' and carry == '0'):
+            result += '1'
+        elif (curr == '0' and carry == '0'):
+            result += '0'
+    return result
+
+# ````````  base conversion for negative binary numbers (using two's complement, base 2) ```````` #
+def twosComplementToDigit(digits):
+    if (digits[0] == '1'): # if negative number: invert and add one
+        modifiedDigits = ''.join(reversed(addOneToBinary(invertBits(digits))))
+        return -1*decode(modifiedDigits, 2)
+    
+    return decode(digits, 2) # positive number
+
+# works for 8 bit only
 def digitToTwosComplement(digit):
-    return
+    if (digit < 0): 
+        # convert to binary
+        unsignedDigits = encode(abs(digit), 2)
+        # negate by inverting and adding 1
+        modifiedDigits = addOneToBinary(invertBits(unsignedDigits))
+        return '1'+ ''.join(reversed(modifiedDigits))
+
+    return encode(digit, 2)
 
 # ```````` base conversion for fractional numbers using a radix point ```````` #
 
@@ -281,4 +319,8 @@ def main():
 
 if __name__ == '__main__':
     main()
+    print("TESTING STRETCH CHALLENGES")
+    print(digitToTwosComplement(-72)) #10111000
+    print(twosComplementToDigit('10111000')) # -72
+    print(digitToTwosComplement(47))# == '00101111'
 

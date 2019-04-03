@@ -1,6 +1,6 @@
 #!python
 
-from bases import decode, encode, convert
+from bases import decode, encode, convert, twosComplementToDigit, digitToTwosComplement
 import unittest
 
 
@@ -264,6 +264,18 @@ class BasesConvertTest(unittest.TestCase):
         assert convert('1110101001100010', 2, 16) == 'ea62'
         assert convert('1111101101110011', 2, 16) == 'fb73'
 
+class BasesUnsignedTest(unittest.TestCase):
+    
+    def test_twos_complement_to_digit(self):
+        assert twosComplementToDigit('10111000') == -72
+        assert twosComplementToDigit('00101111') == 47
+        assert twosComplementToDigit('10010011') == -109
+
+
+    def test_digit_to_twos_complement(self):
+        assert digitToTwosComplement(-72) == '10111000'
+        assert digitToTwosComplement(47) == '101111'
+        assert digitToTwosComplement(-109) == '10010011'
 
 if __name__ == '__main__':
     unittest.main()
